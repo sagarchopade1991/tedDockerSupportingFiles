@@ -32,7 +32,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compo
 chmod +x /usr/local/bin/docker-compose
 
 # installing azure cli
-apt-get install azure-cli -y
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 echo "***************************************************"
 echo "***************************************************"
 echo "Please copy the link and paste it in the browser"
