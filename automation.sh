@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# accept input
-echo "Enter Resource Group Name:"
-read resource_group
-echo "Enter Storage Account Name:"
-read storage_acc
-echo "Enter IoT Hub Name:"
-read iot_hub
-echo "Enter IoT-Device Name(New Device):"
-read iot_device_name
-echo "Enter Cosmos DB Account Name:"
-read cosmos_acc
-echo "Enter Virtual Machine Name:"
-read vm_name
-
 # install docker 
 echo "Installing Docker-Compose"
 apt-get update
@@ -46,7 +32,8 @@ az extension add --name azure-iot
 az acr login --name iotsharedcontainerregistry
 
 # create iot device 
-az iot hub device-identity create -n $iot_hub -d $iot_device_name --ee false
+az iot hub device-identity create -n tediothub -d tediotdevice --ee false
+az iot hub device-identity create -n tediothub -d tediotedgedevice --ee true
 
 # create .env and copy content from env.temp
 true > .env && cp env.temp .env
@@ -56,8 +43,8 @@ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 apt-get install -y nodejs build-essential
 
 # install npm packages and run nodejs app to set environment variables
-
-npm install && node set_env.js $resource_group $storage_acc $iot_hub $iot_device_name $cosmos_acc $vm_name
+npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice tedcosmosaccount tedLinuxVM
+# npm install && node set_env.js $resource_group $storage_acc $iot_hub $iot_device_name $cosmos_acc $vm_name
 
 docker-compose up -d
 
