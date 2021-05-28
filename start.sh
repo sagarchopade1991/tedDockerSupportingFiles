@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 git clone https://github.com/sagarchopade1991/tedDockerSupportingFiles.git 
 cd tedDockerSupportingFiles
 sudo chmod +x automation.sh
