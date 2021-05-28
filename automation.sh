@@ -25,6 +25,7 @@ echo "Please copy the link and paste it in the browser"
 echo "***************************************************"
 echo "***************************************************"
 az login
+
 # add extention to az
 az extension add --name azure-iot
 
@@ -47,4 +48,3 @@ npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice ted
 # npm install && node set_env.js $resource_group $storage_acc $iot_hub $iot_device_name $cosmos_acc $vm_name
 
 docker-compose up -d
-

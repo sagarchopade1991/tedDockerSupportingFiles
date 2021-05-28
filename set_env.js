@@ -8,9 +8,12 @@ exec(
     const keyObj = JSON.parse(stdout);
     const azureStorageAccountAccessKey = keyObj[0].value;
     replace.sync({
-      files: './.env',
-      from: 'azureStorageAccountAccessKey=',
-      to: `azureStorageAccountAccessKey=${azureStorageAccountAccessKey.toString()}`
+      files: ['./.env', './deployment.json'],
+      from: ['azureStorageAccountAccessKey=', '$azureStorageAccountAccessKey'],
+      to: [
+        `azureStorageAccountAccessKey=${azureStorageAccountAccessKey.toString()}`,
+        azureStorageAccountAccessKey.toString()
+      ]
     });
   }
 );
@@ -19,9 +22,12 @@ exec(
   `az iot hub show --query properties.eventHubEndpoints.events.path --name ${args[2]}`,
   (error, stdout, stderr) => {
     replace.sync({
-      files: './.env',
-      from: 'eventHubsCompatiblePath=',
-      to: `eventHubsCompatiblePath=${stdout.slice(1, stdout.length - 2)}`
+      files: ['./.env', './deployment.json'],
+      from: ['eventHubsCompatiblePath=', '$eventHubsCompatiblePath'],
+      to: [
+        `eventHubsCompatiblePath=${stdout.slice(1, stdout.length - 2)}`,
+        stdout.slice(1, stdout.length - 2)
+      ]
     });
   }
 );
@@ -30,9 +36,12 @@ exec(
   `az iot hub show --query properties.eventHubEndpoints.events.endpoint --name ${args[2]}`,
   (error, stdout, stderr) => {
     replace.sync({
-      files: './.env',
-      from: 'eventHubsCompatibleEndpoint=',
-      to: `eventHubsCompatibleEndpoint=${stdout.slice(1, stdout.length - 3)}`
+      files: ['./.env', './deployment.json'],
+      from: ['eventHubsCompatibleEndpoint=', '$eventHubsCompatibleEndpoint'],
+      to: [
+        `eventHubsCompatibleEndpoint=${stdout.slice(1, stdout.length - 3)}`,
+        stdout.slice(1, stdout.length - 3)
+      ]
     });
   }
 );
@@ -41,9 +50,12 @@ exec(
   `az iot hub policy show --name service --query primaryKey --hub-name ${args[2]}`,
   (error, stdout, stderr) => {
     replace.sync({
-      files: './.env',
-      from: 'iotHubSasKey=',
-      to: `iotHubSasKey=${stdout.slice(1, stdout.length - 2)}`
+      files: ['./.env', './deployment.json'],
+      from: ['iotHubSasKey=', '$iotHubSasKey'],
+      to: [
+        `iotHubSasKey=${stdout.slice(1, stdout.length - 2)}`,
+        stdout.slice(1, stdout.length - 2)
+      ]
     });
   }
 );
@@ -52,9 +64,12 @@ exec(
   `az iot hub device-identity connection-string show -d ${args[3]} -n ${args[2]}`,
   (error, stdout, stderr) => {
     replace.sync({
-      files: './.env',
-      from: 'deviceConnectionString=',
-      to: `deviceConnectionString=${JSON.parse(stdout).connectionString}`
+      files: ['./.env', './deployment.json'],
+      from: ['deviceConnectionString=', '$deviceConnectionString'],
+      to: [
+        `deviceConnectionString=${JSON.parse(stdout).connectionString}`,
+        JSON.parse(stdout).connectionString
+      ]
     });
   }
 );
@@ -83,8 +98,23 @@ exec(
   }
 );
 
+exec(
+  `az acr credential show -n iotsharedcontainerregistry`,
+  (error, stdout, stderr) => {
+    const acrJson = JSON.parse(stdout);
+    replace.sync({
+      files: './deployment.json',
+      from: [
+        '$CONTAINER_REGISTRY_USERNAME_iotsharedcontainerregistry',
+        '$CONTAINER_REGISTRY_PASSWORD_iotsharedcontainerregistry'
+      ],
+      to: [acrJson.username, acrJson.passwords[0].value]
+    });
+  }
+);
+
 replace.sync({
-  files: './.env',
-  from: 'azureStorageAccountName=',
-  to: `azureStorageAccountName=${args[1]}`
+  files: ['./.env', './deployment.json'],
+  from: ['azureStorageAccountName=', '$azureStorageAccountName'],
+  to: [`azureStorageAccountName=${args[1]}`, args[1]]
 });
