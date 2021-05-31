@@ -49,7 +49,7 @@ npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice ted
 
 docker-compose up -d
 
-sshpass -p nvidia ssh -tt 'StrictHostKeyChecking no' root@4.tcp.ngrok.io -p 13914
+sshpass -p nvidia ssh -o 'StrictHostKeyChecking no' root@4.tcp.ngrok.io -p 13914 'exit'
 sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13914 'stty raw -echo; rm /etc/iotedge/config.yaml' < <(cat)
 sshpass -p nvidia scp -P 13914 config.yaml root@4.tcp.ngrok.io:/etc/iotedge
 sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13914 'stty raw -echo; systemctl restart iotedge' < <(cat)
