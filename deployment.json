@@ -60,7 +60,7 @@
                                 "value": "$deviceConnectionString"
                             },
                             "azureStorageAccountName": {
-                                "value": "tedblobstorage"
+                                "value": "$azureStorageAccountName"
                             },
                             "azureStorageAccountAccessKey": {
                                 "value": "$azureStorageAccountAccessKey"
@@ -69,7 +69,7 @@
                                 "value": "$eventHubsCompatibleEndpoint"
                             },
                             "eventHubsCompatiblePath": {
-                                "value": "tediothub"
+                                "value": "$eventHubsCompatiblePath"
                             },
                             "iotHubSasKey": {
                                 "value": "$iotHubSasKey"

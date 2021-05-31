@@ -75,6 +75,17 @@ exec(
 );
 
 exec(
+  `az iot hub device-identity connection-string show -d ${args[6]} -n ${args[2]}`,
+  (error, stdout, stderr) => {
+    replace.sync({
+      files: './config.yaml',
+      from: '<connection-string>',
+      to: JSON.parse(stdout).connectionString
+    });
+  }
+);
+
+exec(
   `az cosmosdb keys list --type connection-strings -g ${args[0]} -n ${args[4]}`,
   (error, stdout, stderr) => {
     const jsonObj = JSON.parse(stdout);

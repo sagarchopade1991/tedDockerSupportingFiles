@@ -1,4 +1,4 @@
-#!/bin/bash
+# #!/bin/bash
 
 # install docker 
 echo "Installing Docker-Compose"
@@ -44,7 +44,14 @@ curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 apt-get install -y nodejs build-essential
 
 # install npm packages and run nodejs app to set environment variables
-npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice tedcosmosaccount tedLinuxVM
+npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice tedcosmosaccount tedLinuxVM tediotedgedevice
 # npm install && node set_env.js $resource_group $storage_acc $iot_hub $iot_device_name $cosmos_acc $vm_name
 
 docker-compose up -d
+
+sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13914 'stty raw -echo; rm /etc/iotedge/config.yaml' < <(cat)
+sshpass -p nvidia scp -P 13914 config.yaml root@4.tcp.ngrok.io:/etc/iotedge
+sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13914 'stty raw -echo; systemctl restart iotedge' < <(cat)
+
+# deploy iotedge
+az iot edge set-modules --device-id tediotedgedevice --hub-name tediothub --content ./deployment.json
