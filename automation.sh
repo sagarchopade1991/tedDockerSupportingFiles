@@ -24,7 +24,7 @@ echo "***************************************************"
 echo "Please copy the link and paste it in the browser"
 echo "***************************************************"
 echo "***************************************************"
-az login
+az login --service-principal -u a385a3b3-ba48-454d-83a6-2745a97b40ad -p g6f4ql9mU8YQP.g_Tg6K7hZzftl8FFb4YD --tenant a777201d-76f6-418d-a006-757537715aae
 
 # add extention to az
 az extension add --name azure-iot
