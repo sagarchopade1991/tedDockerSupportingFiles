@@ -41,7 +41,7 @@ true > .env && cp env.temp .env
 
 # install nodejs
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-apt-get install -y nodejs build-essential
+apt-get install -y nodejs build-essential sshpass
 
 # install npm packages and run nodejs app to set environment variables
 npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice tedcosmosaccount tedLinuxVM tediotedgedevice
