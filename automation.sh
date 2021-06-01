@@ -46,10 +46,10 @@ npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice ted
 
 docker-compose up -d
 
-sshpass -p nvidia ssh -o 'StrictHostKeyChecking no' root@4.tcp.ngrok.io -p 13677 'exit'
-sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13677 'stty raw -echo; rm /etc/iotedge/config.yaml' < <(cat)
-sshpass -p nvidia scp -P 13677 config.yaml root@4.tcp.ngrok.io:/etc/iotedge
-sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13677 'stty raw -echo; systemctl restart iotedge' < <(cat)
+sshpass -p nvidia ssh -o 'StrictHostKeyChecking no' root@6.tcp.ngrok.io -p 19941 'exit'
+sshpass -p nvidia ssh -tt root@6.tcp.ngrok.io -p 19941 'stty raw -echo; rm /etc/iotedge/config.yaml' < <(cat)
+sshpass -p nvidia scp -P 19941 config.yaml root@6.tcp.ngrok.io:/etc/iotedge
+sshpass -p nvidia ssh -tt root@6.tcp.ngrok.io -p 19941 'stty raw -echo; systemctl restart iotedge' < <(cat)
 
 # deploy iotedge
 az iot edge set-modules --device-id tediotedgedevice --hub-name tediothub --content ./deployment.json

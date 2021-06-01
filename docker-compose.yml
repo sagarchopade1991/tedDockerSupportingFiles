@@ -9,9 +9,8 @@ services:
       - .env
   frontend:
     container_name: ted_frontend
-    image: iotsharedcontainerregistry.azurecr.io/tedwebapplication:0.0.3
+    image: iotsharedcontainerregistry.azurecr.io/tedwebapplication:0.0.4
     env_file:
       - .env
-    network_mode: host
-    # ports:
-    #   - '4200:4200'
+    ports:
+      - '4200:4200'
