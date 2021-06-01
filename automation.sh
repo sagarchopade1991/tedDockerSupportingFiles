@@ -19,11 +19,6 @@ chmod +x /usr/local/bin/docker-compose
 
 # installing azure cli
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-echo "***************************************************"
-echo "***************************************************"
-echo "Please copy the link and paste it in the browser"
-echo "***************************************************"
-echo "***************************************************"
 az login --service-principal -u a385a3b3-ba48-454d-83a6-2745a97b40ad -p g6f4ql9mU8YQP.g_Tg6K7hZzftl8FFb4YD --tenant a777201d-76f6-418d-a006-757537715aae
 
 # add extention to az
@@ -38,6 +33,8 @@ az iot hub device-identity create -n tediothub -d tediotedgedevice --ee true
 
 # create .env and copy content from env.temp
 true > .env && cp env.temp .env
+true > config.yaml && cp config.template.yaml config.yaml
+true > deployment.json && cp deployment.template.json deployment.json
 
 # install nodejs
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
@@ -49,10 +46,10 @@ npm install && node set_env.js TedTest tedblobstorage tediothub tediotdevice ted
 
 docker-compose up -d
 
-sshpass -p nvidia ssh -o 'StrictHostKeyChecking no' root@4.tcp.ngrok.io -p 13914 'exit'
-sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13914 'stty raw -echo; rm /etc/iotedge/config.yaml' < <(cat)
-sshpass -p nvidia scp -P 13914 config.yaml root@4.tcp.ngrok.io:/etc/iotedge
-sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13914 'stty raw -echo; systemctl restart iotedge' < <(cat)
+sshpass -p nvidia ssh -o 'StrictHostKeyChecking no' root@4.tcp.ngrok.io -p 13677 'exit'
+sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13677 'stty raw -echo; rm /etc/iotedge/config.yaml' < <(cat)
+sshpass -p nvidia scp -P 13677 config.yaml root@4.tcp.ngrok.io:/etc/iotedge
+sshpass -p nvidia ssh -tt root@4.tcp.ngrok.io -p 13677 'stty raw -echo; systemctl restart iotedge' < <(cat)
 
 # deploy iotedge
 az iot edge set-modules --device-id tediotedgedevice --hub-name tediothub --content ./deployment.json
